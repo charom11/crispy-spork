@@ -18,6 +18,7 @@ class User(Base):
     # Relationships
     strategies = relationship("Strategy", back_populates="user")
     exchange_configs = relationship("ExchangeConfig", back_populates="user")
+    risk_profiles = relationship("RiskProfile", back_populates="user")
     
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}', username='{self.username}')>"

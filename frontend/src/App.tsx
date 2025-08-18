@@ -7,6 +7,7 @@ import { RegisterForm } from './components/auth/RegisterForm';
 import { DashboardLayout } from './components/dashboard/DashboardLayout';
 import { Overview } from './components/dashboard/Overview';
 import { Trading } from './components/dashboard/Trading';
+import { RiskManagement } from './components/dashboard/RiskManagement';
 
 function App() {
   return (
@@ -43,15 +44,25 @@ function App() {
                 </ProtectedRoute>
               } 
             />
-            <Route 
-              path="/dashboard/trading" 
+                        <Route
+              path="/dashboard/trading"
               element={
                 <ProtectedRoute>
                   <DashboardLayout>
                     <Trading />
                   </DashboardLayout>
                 </ProtectedRoute>
-              } 
+              }
+            />
+            <Route
+              path="/dashboard/risk"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <RiskManagement />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
             />
             
             {/* Default redirects */}
