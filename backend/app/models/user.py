@@ -15,5 +15,8 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     
+    # Relationships
+    strategies = relationship("Strategy", back_populates="user")
+    
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}', username='{self.username}')>"

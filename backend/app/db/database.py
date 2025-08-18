@@ -37,6 +37,7 @@ def init_db():
     try:
         # Import all models here to ensure they are registered
         from app.models.user import User
+        from app.models.strategy import Strategy
         
         # Create all tables
         Base.metadata.create_all(bind=engine)
