@@ -38,6 +38,7 @@ def init_db():
         # Import all models here to ensure they are registered
         from app.models.user import User
         from app.models.strategy import Strategy
+        from app.models.exchange import ExchangeConfig
         
         # Create all tables
         Base.metadata.create_all(bind=engine)

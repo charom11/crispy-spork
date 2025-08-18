@@ -45,9 +45,11 @@ app.add_middleware(
 # Include API routers
 from app.api.auth import router as auth_router
 from app.api.strategies import router as strategies_router
+from app.api.exchanges import router as exchanges_router
 
 app.include_router(auth_router)
 app.include_router(strategies_router)
+app.include_router(exchanges_router)
 
 @app.get("/")
 async def root():

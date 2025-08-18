@@ -226,8 +226,8 @@ class StrategyManager:
                     await asyncio.sleep(1)
                     continue
                 
-                # Get market data (mock data for now)
-                market_data = self._get_mock_market_data()
+                # Get market data (try real data first, fallback to mock)
+                market_data = await self._get_real_market_data("BTCUSDT")  # Default symbol
                 
                 # Execute strategy
                 signal = strategy.execute(market_data)
@@ -264,9 +264,9 @@ class StrategyManager:
         except Exception as e:
             logger.error(f"Error processing trade signal for strategy {strategy_id}: {e}")
     
-    def _get_mock_market_data(self) -> Dict[str, Any]:
+    async def _get_mock_market_data(self) -> Dict[str, Any]:
         """Get mock market data for testing"""
-        # In production, this would fetch real market data
+        # In production, this would fetch real market data from exchanges
         import random
         
         return {
@@ -274,6 +274,32 @@ class StrategyManager:
             'volume': random.uniform(100, 1000),
             'timestamp': datetime.utcnow().isoformat()
         }
+    
+    async def _get_real_market_data(self, symbol: str) -> Dict[str, Any]:
+        """Get real market data from connected exchanges"""
+        try:
+            # Get price from all connected exchanges
+            from app.exchanges.factory import exchange_factory
+            prices = await exchange_factory.get_price_from_all_exchanges(symbol)
+            
+            if prices:
+                # Use the first available price
+                exchange_id = list(prices.keys())[0]
+                price_info = prices[exchange_id]
+                
+                return {
+                    'price': price_info['price'],
+                    'volume': price_info['volume'],
+                    'timestamp': price_info['timestamp'],
+                    'exchange': exchange_id
+                }
+            
+            # Fallback to mock data if no exchanges connected
+            return await self._get_mock_market_data()
+            
+        except Exception as e:
+            logger.error(f"Error getting real market data: {e}")
+            return await self._get_mock_market_data()
     
     def shutdown(self):
         """Shutdown strategy manager"""
