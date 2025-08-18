@@ -4,7 +4,9 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
-import { Dashboard } from './components/dashboard/Dashboard';
+import { DashboardLayout } from './components/dashboard/DashboardLayout';
+import { Overview } from './components/dashboard/Overview';
+import { Trading } from './components/dashboard/Trading';
 
 function App() {
   return (
@@ -35,7 +37,19 @@ function App() {
               path="/dashboard" 
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <DashboardLayout>
+                    <Overview />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/trading" 
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <Trading />
+                  </DashboardLayout>
                 </ProtectedRoute>
               } 
             />
