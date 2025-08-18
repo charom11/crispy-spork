@@ -2,14 +2,29 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import uvicorn
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    print("🚀 Starting Algorithmic Trading Platform Backend...")
+    logger.info("🚀 Starting Algorithmic Trading Platform Backend...")
+    
+    # Initialize database
+    try:
+        from app.db.database import init_db
+        init_db()
+        logger.info("✅ Database initialized successfully")
+    except Exception as e:
+        logger.error(f"❌ Database initialization failed: {e}")
+    
     yield
+    
     # Shutdown
-    print("🛑 Shutting down Algorithmic Trading Platform Backend...")
+    logger.info("🛑 Shutting down Algorithmic Trading Platform Backend...")
 
 app = FastAPI(
     title="Algorithmic Trading Platform API",
@@ -27,12 +42,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include API routers
+from app.api.auth import router as auth_router
+app.include_router(auth_router)
+
 @app.get("/")
 async def root():
     return {
         "message": "Algorithmic Trading Platform API",
         "version": "1.0.0",
-        "status": "running"
+        "status": "running",
+        "endpoints": {
+            "authentication": "/auth",
+            "api_docs": "/docs",
+            "health": "/health"
+        }
     }
 
 @app.get("/health")
