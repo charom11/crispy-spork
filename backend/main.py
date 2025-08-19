@@ -47,11 +47,13 @@ from app.api.auth import router as auth_router
 from app.api.strategies import router as strategies_router
 from app.api.exchanges import router as exchanges_router
 from app.api.risk import router as risk_router
+from app.api.trading_mode import router as trading_mode_router
 
 app.include_router(auth_router)
 app.include_router(strategies_router)
 app.include_router(exchanges_router)
 app.include_router(risk_router)
+app.include_router(trading_mode_router)
 
 @app.get("/")
 async def root():
