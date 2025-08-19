@@ -39,6 +39,9 @@ def init_db():
         from app.models.user import User
         from app.models.strategy import Strategy
         from app.models.exchange import ExchangeConfig
+        from app.models.risk import RiskProfile, RiskAlert
+        from app.models.trading_mode import TradingMode
+        from app.models.log import LogEntry
         
         # Create all tables
         Base.metadata.create_all(bind=engine)

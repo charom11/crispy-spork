@@ -20,6 +20,7 @@ class Strategy(Base):
     # Relationships
     user = relationship("User", back_populates="strategies")
     trades = relationship("Trade", back_populates="strategy")
+    log_entries = relationship("LogEntry", back_populates="strategy")
     
     def __repr__(self):
         return f"<Strategy(id={self.id}, name='{self.name}', type='{self.type}', user_id={self.user_id})>"
